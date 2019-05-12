@@ -5,7 +5,7 @@ include mixins/formProject
 block Contenido
     .contenido-principal
         h1 #{nombrePagina}
-                
+              
         if errores 
             each error in errores 
                 .alerta.error= error.texto

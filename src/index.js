@@ -6,9 +6,9 @@ const db = require('./config/db');
 const helpers = require('./helpers');
 
 // Connect to the db
-const model = require('./models/Proyectos');
-//db.sync()
-db.authenticate()
+const { Project, Task } = require('./models');
+db.sync()
+//db.authenticate()
     .then(() => console.log('Conectado al servidor'))
     .catch((error) => console.log(error));
 
@@ -35,4 +35,4 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes());
 
 // Start server
-app.listen(3000);
+app.listen(3001);

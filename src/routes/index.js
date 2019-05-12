@@ -1,20 +1,27 @@
 const express = require('express');
 const { body } = require('express-validator/check');
-const controller = require('../controller');
+const { ProjectCtrl, TaskCtrl } = require('../controller');
 
 module.exports = () => {
     const router = express.Router();
-    router.get('/', controller.index);
-    router.get('/project/:url', controller.get);
-    router.post('/project/:id', 
-        body('nombre').not().isEmpty().trim().escape(),
-        controller.put
-    );
+    // Rutas de proyecto
+    router.get('/', ProjectCtrl.index);
+    router.get('/project/:url', ProjectCtrl.get);
     router.post('/project/', 
-        body('nombre').not().isEmpty().trim().escape(),
-        controller.post
+        body('name').not().isEmpty().trim().escape(),
+        ProjectCtrl.post
     );
-    router.get('/project/new', controller.formNew);
-    router.get('/project/edit/:id', controller.formEdit)
+    router.post('/project/:id', 
+        body('name').not().isEmpty().trim().escape(),
+        ProjectCtrl.put
+    );
+    router.delete('/project/:url', ProjectCtrl.delete);
+    router.get('/project/new', ProjectCtrl.formNew);
+    router.get('/project/edit/:id', ProjectCtrl.formEdit)
+    // Rutas de tareas
+    router.post('/project/task/:id',
+        body('name').not().isEmpty().trim().escape(),
+        TaskCtrl.post
+    );
     return router;
 }

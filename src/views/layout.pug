@@ -25,7 +25,8 @@ html(lang="en")
                         ul#proyectos.proyectos
                             each project in projects 
                                 li
-                                    a(href=`/project/${project.url}`)= project.nombre
+                                    a(href=`/project/${project.url}`)= project.name
 
             block Contenido
         
+        script(src="/dist/bundle.js")

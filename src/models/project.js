@@ -4,20 +4,20 @@ const slug = require ('slug');
 const shortid = require('shortid');
 
 
-const Proyectos = db.define('proyectos', {
+const Project = db.define('projects', {
     id: {
         type: sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    nombre: sequelize.STRING,
-    url: sequelize.STRING 
+    name: sequelize.STRING,
+    url: sequelize.STRING
 }, {
     hooks: {
-        beforeCreate(proyecto) {
-            proyecto.url = `${slug(proyecto.nombre).toLowerCase()}-${shortid.generate()}`;
+        beforeCreate(project) {
+            project.url = `${slug(project.name).toLowerCase()}-${shortid.generate()}`;
         }
     }
 });
 
-module.exports = Proyectos;
+module.exports = Project;
