@@ -1,0 +1,14 @@
+extends layout
+
+block Contenido
+    .contenido-principal
+        h1 #{nombrePagina} - #{project.nombre}
+
+        // TO-DO Form
+
+        // TO-DO Listado pendientes
+
+        // Acciones permitidas
+        .contenedor-acciones
+            a(href=`/project/edit/${project.id}` class="boton") Editar proyecto
+            button#eliminar-proyecto(type="button" class="boton eliminar") Eliminar proyecto
