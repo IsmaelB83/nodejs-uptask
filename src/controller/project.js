@@ -1,4 +1,4 @@
-const { Project } = require('../models');
+const { Project, Task } = require('../models');
 
 const ctrl = {};
 
@@ -24,12 +24,20 @@ ctrl.get = async (req, res, next) => {
         console.log(`Proyecto ${req.params.id} no encontrado`);
         return next();
     }
+    // Busco las tareas
+    const tasks = await Task.findAll({
+        where: {
+            projectId: project.id
+        },  
+        /* include: [ { model: Project } ] */
+    })
     // Encontrado renderizo 
     const projects = await Project.findAll();
     res.render('project', {
         nombrePagina: 'Tareas del proyecto',
         projects,
-        project
+        project,
+        tasks
     });
 };
 
@@ -62,8 +70,8 @@ ctrl.post = async (req, res, next) => {
     res.redirect('/');
 }
 
-// Put (update project information)
-ctrl.put = async (req, res, next) => {
+// update project name
+ctrl.patchName = async (req, res, next) => {
     // Validacion de datos propia
     let errores = [];
     // Chequeos
@@ -82,10 +90,15 @@ ctrl.put = async (req, res, next) => {
     }
     // No hay errores
     try {
-        await Project.update(
-            { nombre: req.body.nombre },
+        console.log(req.body.name);
+        console.log(req.params.id);
+        let project = await Project.update(
+            { name: req.body.name },
             { where: { id: req.params.id } }    
         );
+        if (!project) {
+            console.log('Error actualizando proyecto');
+        }
     } catch (error) {
         console.log(error);
     }
@@ -96,8 +109,14 @@ ctrl.put = async (req, res, next) => {
 ctrl.delete = async (req, res, next) => {
     // Encontrado renderizo 
     try {
-        const result = await Project.destroy({where: {url: req.params.url}});
-        if (!result) {
+        const project = await Project.findOne({where: {url: req.params.url}});
+        if (project) {
+            await Task.destroy({where: {projectId: project.id}});
+            const result = await Project.destroy({where: {id: project.id}});
+            if (!result) {
+                return next();
+            } 
+        } else {
             return next();
         }
         res.status(200).send('OK');

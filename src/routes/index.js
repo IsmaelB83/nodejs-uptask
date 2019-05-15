@@ -11,9 +11,9 @@ module.exports = () => {
         body('name').not().isEmpty().trim().escape(),
         ProjectCtrl.post
     );
-    router.post('/project/:id', 
+    router.patch('/project/:id', 
         body('name').not().isEmpty().trim().escape(),
-        ProjectCtrl.put
+        ProjectCtrl.patchName
     );
     router.delete('/project/:url', ProjectCtrl.delete);
     router.get('/project/new', ProjectCtrl.formNew);
@@ -23,5 +23,7 @@ module.exports = () => {
         body('name').not().isEmpty().trim().escape(),
         TaskCtrl.post
     );
+    router.patch('/project/task/:id', TaskCtrl.patchStatus);
+    router.delete('/project/task/:id', TaskCtrl.delete);
     return router;
 }

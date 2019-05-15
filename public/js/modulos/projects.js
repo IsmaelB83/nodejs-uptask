@@ -20,10 +20,9 @@ if (btnEliminar) {
         }).then((result) => {
             if (result.value) {
                 let url = `${location.origin}/project/${projectUrl}`
-                console.log(url);
                 Axios.delete(url, {params: projectUrl})
                 .then(respuesta => {
-                    if (respuesta.status === 200 && respuesta.data === 'OK') {
+                    if (respuesta.status === 200) {
                         Swal.fire(
                             'Borrado!',
                             'Registro borrado con exito',

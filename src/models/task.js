@@ -10,7 +10,6 @@ const Task = db.define('tasks', {
     },
     name: sequelize.STRING(100),
     status: sequelize.BOOLEAN,
-
 });
 Task.belongsTo(Project);
 

@@ -1,3 +1,7 @@
-import projects from './modulos/proyectos';
+import { projects, tasks } from './modulos';
+import { updateProgressBar } from './funciones/progress';
 
-window.boton = projects;
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateProgressBar();
+});

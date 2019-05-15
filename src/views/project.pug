@@ -4,16 +4,38 @@ block Contenido
     .contenido-principal
         h1 #{nombrePagina} - #{project.name}
 
-        form.agregar-tarea(action=`/project/task/${project.url}` method="POST")
+        // Formulario agregar tareas al proyecto
+        form.agregar-tarea(action=`/project/task/${project.id}` method="POST")
             .campo
                 label(for="name") Tarea:
-                input.nombre-tarea(type="text" id="name" name="name" placeholder="Nombre tarea")
+                input.nombre-tarea(type="text" id="name" name="name" placeholder="Nombre tarea" required)
             .campo.enviar
                 input.boton.nueva-tarea(type="submit" value="Agregar")
  
-        // TO-DO Listado pendientes
+        // Tareas del proyecto
+        .listado-pendientes
+            ul
+                if tasks.length
+                    each task in tasks
+                        li.tarea(data-task-id=task.id)
+                            p= task.name
+                            .acciones
+                                if task.status  
+                                    i.far.fa-check-circle.completo
+                                else    
+                                    i.far.fa-check-circle
+                                i.fas.fa-trash
+                else
+                    p No hay tareas en este proyecto
+
+        // Progress bar
+        .avance
+            h2 Avance del Proyecto
+            #barra-avance.barra-avance
+                #porcentaje.porcentaje
 
         // Acciones permitidas
         .contenedor-acciones
             a(href=`/project/edit/${project.id}` class="boton") Editar proyecto
             button#eliminar-proyecto(data-project-url=project.url type="button" class="boton eliminar") Eliminar proyecto
+        

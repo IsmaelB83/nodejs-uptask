@@ -426,19 +426,54 @@ eval("/*!\n* sweetalert2 v8.10.7\n* Released under the MIT License.\n*/\n(functi
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _modulos_proyectos__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modulos/proyectos */ \"./public/js/modulos/proyectos.js\");\n\nwindow.boton = _modulos_proyectos__WEBPACK_IMPORTED_MODULE_0__[\"default\"];\n\n//# sourceURL=webpack:///./public/js/app.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _modulos__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modulos */ \"./public/js/modulos/index.js\");\n/* harmony import */ var _modulos__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_modulos__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _funciones_progress__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./funciones/progress */ \"./public/js/funciones/progress.js\");\n\n\ndocument.addEventListener('DOMContentLoaded', function () {\n  Object(_funciones_progress__WEBPACK_IMPORTED_MODULE_1__[\"updateProgressBar\"])();\n});\n\n//# sourceURL=webpack:///./public/js/app.js?");
 
 /***/ }),
 
-/***/ "./public/js/modulos/proyectos.js":
-/*!****************************************!*\
-  !*** ./public/js/modulos/proyectos.js ***!
-  \****************************************/
+/***/ "./public/js/funciones/progress.js":
+/*!*****************************************!*\
+  !*** ./public/js/funciones/progress.js ***!
+  \*****************************************/
+/*! exports provided: updateProgressBar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"updateProgressBar\", function() { return updateProgressBar; });\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ \"./node_modules/sweetalert2/dist/sweetalert2.all.js\");\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);\n\nvar updateProgressBar = function updateProgressBar() {\n  var tasks = document.querySelectorAll('li.tarea');\n  var progressBar = document.querySelector('#porcentaje');\n\n  if (tasks && tasks.length) {\n    var tasksCompleted = document.querySelectorAll('.fa-check-circle.completo');\n    var progress = Math.round(tasksCompleted.length / tasks.length * 100);\n    progressBar.style.width = \"\".concat(progress, \"%\");\n\n    if (progress === 100) {\n      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Completaste el proyecto', 'Felicidades has terminado tus tareas', 'success');\n    }\n  }\n};\n\n//# sourceURL=webpack:///./public/js/funciones/progress.js?");
+
+/***/ }),
+
+/***/ "./public/js/modulos/index.js":
+/*!************************************!*\
+  !*** ./public/js/modulos/index.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = {\n  projects: __webpack_require__(/*! ./projects */ \"./public/js/modulos/projects.js\"),\n  tasks: __webpack_require__(/*! ./tasks */ \"./public/js/modulos/tasks.js\")\n};\n\n//# sourceURL=webpack:///./public/js/modulos/index.js?");
+
+/***/ }),
+
+/***/ "./public/js/modulos/projects.js":
+/*!***************************************!*\
+  !*** ./public/js/modulos/projects.js ***!
+  \***************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ \"./node_modules/sweetalert2/dist/sweetalert2.all.js\");\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);\n\n\nvar btnEliminar = document.querySelector('#eliminar-proyecto');\n\nif (btnEliminar) {\n  btnEliminar.addEventListener('click', function (ev) {\n    // Proyecto a eliminar\n    var projectUrl = ev.currentTarget.dataset.projectUrl; // Muestro popup de confirmación\n\n    sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({\n      title: \"¿Estás seguro?\",\n      text: \"Una vez borrado, el proyecto no podrá ser recuperado!\",\n      type: \"warning\",\n      showCancelButton: true,\n      confirmButtonColor: '#3085d6',\n      cancelButtonColor: '#d33',\n      confirmButtonText: 'Si. Borrar',\n      cancelButtonText: 'Cancelar'\n    }).then(function (result) {\n      if (result.value) {\n        var url = \"\".concat(location.origin, \"/project/\").concat(projectUrl);\n        console.log(url);\n        axios__WEBPACK_IMPORTED_MODULE_1___default.a[\"delete\"](url, {\n          params: projectUrl\n        }).then(function (respuesta) {\n          if (respuesta.status === 200 && respuesta.data === 'OK') {\n            sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Borrado!', 'Registro borrado con exito', 'success');\n            setTimeout(function () {\n              window.location.href = '/';\n            }, 1000);\n          }\n        })[\"catch\"](function (error) {\n          sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Error!', \"Error incontrolado: \".concat(error.toString()), 'error');\n        });\n      }\n    });\n  });\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (btnEliminar);\n\n//# sourceURL=webpack:///./public/js/modulos/proyectos.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ \"./node_modules/sweetalert2/dist/sweetalert2.all.js\");\n/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);\n\n\nvar btnEliminar = document.querySelector('#eliminar-proyecto');\n\nif (btnEliminar) {\n  btnEliminar.addEventListener('click', function (ev) {\n    // Proyecto a eliminar\n    var projectUrl = ev.currentTarget.dataset.projectUrl; // Muestro popup de confirmación\n\n    sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({\n      title: \"¿Estás seguro?\",\n      text: \"Una vez borrado, el proyecto no podrá ser recuperado!\",\n      type: \"warning\",\n      showCancelButton: true,\n      confirmButtonColor: '#3085d6',\n      cancelButtonColor: '#d33',\n      confirmButtonText: 'Si. Borrar',\n      cancelButtonText: 'Cancelar'\n    }).then(function (result) {\n      if (result.value) {\n        var url = \"\".concat(location.origin, \"/project/\").concat(projectUrl);\n        axios__WEBPACK_IMPORTED_MODULE_1___default.a[\"delete\"](url, {\n          params: projectUrl\n        }).then(function (respuesta) {\n          if (respuesta.status === 200) {\n            sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Borrado!', 'Registro borrado con exito', 'success');\n            setTimeout(function () {\n              window.location.href = '/';\n            }, 1000);\n          }\n        })[\"catch\"](function (error) {\n          sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Error!', \"Error incontrolado: \".concat(error.toString()), 'error');\n        });\n      }\n    });\n  });\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (btnEliminar);\n\n//# sourceURL=webpack:///./public/js/modulos/projects.js?");
+
+/***/ }),
+
+/***/ "./public/js/modulos/tasks.js":
+/*!************************************!*\
+  !*** ./public/js/modulos/tasks.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\");\n/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _funciones_progress__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../funciones/progress */ \"./public/js/funciones/progress.js\");\n\n\nvar tasksList = document.querySelector('.listado-pendientes');\n\nif (tasksList) {\n  tasksList.addEventListener('click', function (ev) {\n    var element = ev.srcElement.closest('.tarea');\n\n    if (element) {\n      // Task url\n      var url = \"\".concat(location.origin, \"/project/task/\").concat(element.dataset.taskId);\n\n      if (ev.srcElement.classList.contains('fa-check-circle')) {\n        // Change task status\n        axios__WEBPACK_IMPORTED_MODULE_0___default.a.patch(url).then(function (result) {\n          if (result.status === 200) {\n            ev.srcElement.classList.toggle('completo');\n            Object(_funciones_progress__WEBPACK_IMPORTED_MODULE_1__[\"updateProgressBar\"])();\n          }\n        })[\"catch\"](function (error) {\n          return console.log(error);\n        });\n      } else if (ev.srcElement.classList.contains('fa-trash')) {\n        axios__WEBPACK_IMPORTED_MODULE_0___default.a[\"delete\"](url).then(function (result) {\n          if (result.status === 200) {\n            element.parentElement.removeChild(element);\n            Object(_funciones_progress__WEBPACK_IMPORTED_MODULE_1__[\"updateProgressBar\"])();\n          }\n        })[\"catch\"](function (error) {\n          return console.log(error);\n        });\n      }\n    }\n  });\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (tasksList);\n\n//# sourceURL=webpack:///./public/js/modulos/tasks.js?");
 
 /***/ })
 
