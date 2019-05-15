@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        include partials/header
+    body.login
+        .contenedor-formulario
+            h1 Login en UpTask
+
+            // Mensajes de error
+            if locals.messages
+                .alertas
+                    each category in Object.keys(locals.messages)
+                        each message in locals.messages[category]
+                            .alerta(class=`${category}`)
+                                p= message
+                                
+            // Formulario de creación
+            form#formulario.caja.caja-login(method='POST' action="/login/")
+                .campo
+                    label(for="email") E-mail:
+                    input(type="email" name="email" placeholder="Tu e-mail" value= email required)  
+                .campo
+                    label(for="password") Password:
+                    input(type="password" name="password" placeholder="Password" value= password required) 
+                .campo.enviar
+                    input.boton(type="submit" value="Iniciar sesión") 
+                .campo
+                    a(href="/user/new") ¿Aún no tienes cuenta? Crea una gratis aquí

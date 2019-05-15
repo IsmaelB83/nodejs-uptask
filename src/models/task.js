@@ -2,6 +2,7 @@ const sequelize = require('sequelize');
 const db = require('../config/db');
 const Project = require('./project');
 
+
 const Task = db.define('tasks', {
     id: {
         type: sequelize.INTEGER,
@@ -12,6 +13,7 @@ const Task = db.define('tasks', {
     status: sequelize.BOOLEAN,
 });
 Task.belongsTo(Project);
+
 
 module.exports = Task;
 

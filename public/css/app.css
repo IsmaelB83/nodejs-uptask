@@ -240,7 +240,7 @@ body.index {
     text-align: center;
     font-size: .9rem;
     font-weight: 900;
-    max-width: 300px;
+    max-width: 600px;
     margin: 0 auto 1rem auto;
     text-transform: uppercase;
 }
@@ -334,3 +334,12 @@ form input[type="submit"]{
     text-align: center;
     display: block;
 }
+
+.session {
+    font-weight: bold;
+}
+
+.session span, i {
+    margin-left: 5px;
+    color: #FDD835;
+}   
