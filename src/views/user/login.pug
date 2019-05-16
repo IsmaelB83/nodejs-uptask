@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 html(lang="en")
     head
-        include partials/header
+        include ../partials/header
     body.login
         .contenedor-formulario
             h1 Login en UpTask
@@ -15,7 +15,7 @@ html(lang="en")
                                 p= message
                                 
             // Formulario de creación
-            form#formulario.caja.caja-login(method='POST' action="/login/")
+            form#formulario.caja.caja-login(method='POST' action="/user/login")
                 .campo
                     label(for="email") E-mail:
                     input(type="email" name="email" placeholder="Tu e-mail" value= email required)  
@@ -24,5 +24,6 @@ html(lang="en")
                     input(type="password" name="password" placeholder="Password" value= password required) 
                 .campo.enviar
                     input.boton(type="submit" value="Iniciar sesión") 
-                .campo
+                .campo.acciones
                     a(href="/user/new") ¿Aún no tienes cuenta? Crea una gratis aquí
+                    a(href="/user/reset/") ¿Olvidaste tu contraseña?

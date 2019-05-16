@@ -6,9 +6,9 @@ html(lang="en")
         header.barra
             a(href='/')
                 h1 UpTask - Administrador de proyectos
-            a.session(href="/logout/") Cerrar sesión 
+            a.session(href="/user/logout/") Cerrar sesión 
                 i.fas.fa-lock 
-                span #{locals.passport.user.email}
+                span #{locals.user.email}
         
         main.contenedor
             aside.contenedor-proyectos

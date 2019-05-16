@@ -1,64 +1,66 @@
 const express = require('express');
 const { body } = require('express-validator/check');
-const { ProjectCtrl, TaskCtrl, UserCtrl, AuthCtrl } = require('../controller');
+const { ProjectCtrl, TaskCtrl, UserCtrl } = require('../controller');
 
 module.exports = () => {
     const router = express.Router();
     // Rutas de proyecto
     router.get('/', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         ProjectCtrl.index
     );
     router.get('/project/:url',
-        AuthCtrl.userAuthenticated, 
+        UserCtrl.userAuthenticated, 
         ProjectCtrl.get
     );
     router.post('/project/', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         body('name').not().isEmpty().trim().escape(),
         ProjectCtrl.post
     );
     router.patch('/project/:id', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         body('name').not().isEmpty().trim().escape(),
         ProjectCtrl.patchName
     );
     router.delete('/project/:url', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         ProjectCtrl.delete
     );
     router.get('/project/new', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         ProjectCtrl.formNew);
     router.get('/project/edit/:id', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         ProjectCtrl.formEdit
     );
     // Rutas de tareas
     router.post('/project/task/:id',
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         body('name').not().isEmpty().trim().escape(),
         TaskCtrl.post
     );
     router.patch('/project/task/:id', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         TaskCtrl.patchStatus
     );
     router.delete('/project/task/:id', 
-        AuthCtrl.userAuthenticated,
+        UserCtrl.userAuthenticated,
         TaskCtrl.delete
     );
     // Rutas de cuentas de usuario
     router.get('/user/new', UserCtrl.formNew);
-    router.post('/user/', UserCtrl.post);
-    // Rutas de autenticacion
-    router.get('/login/', AuthCtrl.formLogin);
-    router.post('/login/', AuthCtrl.login)
-    router.get('/logout/', 
-        AuthCtrl.userAuthenticated,
-        AuthCtrl.logout
+    router.get('/user/reset/', UserCtrl.formReset);
+    router.get('/user/login/', UserCtrl.formLogin);
+    router.post('/user/', UserCtrl.create);
+    router.post('/user/reset/', UserCtrl.reset);
+    router.get('/user/reset/:token', UserCtrl.resetWithToken);
+    router.post('/user/reset/:token', UserCtrl.updatePassword);
+    router.post('/user/login/', UserCtrl.login);
+    router.get('/user/logout/', 
+        UserCtrl.userAuthenticated,
+        UserCtrl.logout
     )
-
 
     return router;
 }

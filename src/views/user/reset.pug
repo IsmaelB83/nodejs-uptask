@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        include ../partials/header
+    body.login
+        .contenedor-formulario
+            h1 Reset password
+
+            // Mensajes de error
+            if locals.messages
+                .alertas
+                    each category in Object.keys(locals.messages)
+                        each message in locals.messages[category]
+                            .alerta(class=`${category}`)
+                                p= message
+                                
+            // Formulario de creación
+            p Agrega tu e-mail para restablecer la contraseña
+            form#formulario.caja.caja-login(method='POST' action="/user/reset")
+                .campo
+                    label(for="email") E-mail:
+                    input(type="email" name="email" placeholder="Tu e-mail" value= email required)  
+                .campo.enviar
+                    input.boton(type="submit" value="Restablecer password") 
+                .campo
+                    a(href="/user/login/") Ya lo recordé. Iniciar sesión.

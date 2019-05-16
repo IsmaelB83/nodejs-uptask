@@ -4,7 +4,7 @@ const ctrl = {};
 
 // Index (list project)
 ctrl.index = async (req, res, next) => {
-    const projects = await Project.findAll();
+    const projects = await Project.findAll({where: {userId: res.locals.user.id}});
     res.render('index', {
         nombrePagina: 'Projects',
         projects
@@ -32,8 +32,8 @@ ctrl.get = async (req, res, next) => {
         /* include: [ { model: Project } ] */
     })
     // Encontrado renderizo 
-    const projects = await Project.findAll();
-    res.render('project', {
+    const projects = await Project.findAll({where: {userId: res.locals.user.id}});
+    res.render('project/project', {
         nombrePagina: 'Tareas del proyecto',
         projects,
         project,
@@ -47,13 +47,14 @@ ctrl.post = async (req, res, next) => {
     let errores = [], projects, project;
     // Construyo el objeto project
     project = { ...req.body };
+    project.userId = res.locals.user.id;
     // Chequeos
     if (!project.name) {
         errores.push( { texto: 'El nombre del proyecto es obligatorio' } );
     }   
     // Si hay errores
     if (errores.length > 0) {
-        projects = await Project.findAll();
+        projects = await Project.findAll({where: {userId: res.locals.user.id}});
         res.render('newproject', {
             nombrePagina: 'New Project',
             errores,
@@ -80,7 +81,7 @@ ctrl.patchName = async (req, res, next) => {
     }
     // Si hay errores
     if (errores.length > 0) {
-        projects = await Project.findAll();
+        const projects = await Project.findAll({where: {userId: res.locals.user.id}});
         res.render('newproject', {
             nombrePagina: 'Edit Project',
             errores,
@@ -127,8 +128,8 @@ ctrl.delete = async (req, res, next) => {
 
 // Create form (use to create projects)
 ctrl.formNew = async (req, res, next) => {
-    const projects = await Project.findAll();
-    res.render('newproject', {
+    const projects = await Project.findAll({where: {userId: res.locals.user.id}});
+    res.render('project/newproject', {
         nombrePagina: 'New Project',
         projects
     });
@@ -137,13 +138,13 @@ ctrl.formNew = async (req, res, next) => {
 
 // Edit form (use to create projects)
 ctrl.formEdit = async (req, res, next) => {
-    const projects = await Project.findAll();
+    const projects = await Project.findAll({where: {userId: res.locals.user.id}});
     const project = await Project.findOne({ 
         where: {
             id: req.params.id,
         } 
     });
-    res.render('newproject', {
+    res.render('project/newproject', {
         nombrePagina: 'Edit Project',
         projects,
         project

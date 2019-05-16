@@ -339,7 +339,7 @@ form input[type="submit"]{
     font-weight: bold;
 }
 
-.session span, i {
+.session span, .session i {
     margin-left: 5px;
     color: #FDD835;
 }   
