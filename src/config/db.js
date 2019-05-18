@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('uptasknodejs', 'trama', 'Uptasknodejs_2019', {
+const sequelize = new Sequelize('uptaskdb', 'trama', 'qwerty83', {
   host: 'localhost',
   dialect: 'mysql',
   operatorAliases: false,

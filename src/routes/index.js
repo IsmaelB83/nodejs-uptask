@@ -53,8 +53,9 @@ module.exports = () => {
     router.get('/user/reset/', UserCtrl.formReset);
     router.get('/user/login/', UserCtrl.formLogin);
     router.post('/user/', UserCtrl.create);
-    router.post('/user/reset/', UserCtrl.reset);
+    router.post('/user/reset/', UserCtrl.sendToken);
     router.get('/user/reset/:token', UserCtrl.resetWithToken);
+    router.get('/user/new/:token', UserCtrl.activateUser);
     router.post('/user/reset/:token', UserCtrl.updatePassword);
     router.post('/user/login/', UserCtrl.login);
     router.get('/user/logout/', 

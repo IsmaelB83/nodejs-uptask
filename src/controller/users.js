@@ -5,6 +5,7 @@ const sequelize = require('sequelize');
 const Op = sequelize.Op
 
 const { User } = require('../models');
+const sendMail = require('../handlers/email');
 
 const ctrl = {};
 
@@ -29,10 +30,20 @@ ctrl.formLogin = async (req, res, next) => {
 ctrl.create = async (req, res, next) => {
     try {
         let user = {...req.body};  
+        user.token = crypto.randomBytes(20).toString('hex');
         user = await User.create(user);  
         if (!user) {
             return next();
         }
+        // Genero url de reseteo y la envío por mail
+        const resetUrl = `http://${req.headers.host}/user/new/${user.token}`;
+        sendMail.send({
+            email: user.email, 
+            subject: 'Activar cuenta de usuario',
+            url: resetUrl,
+            view: 'newUser'
+        });
+        req.flash('correcto', 'Se le ha enviado un mail con el enlace para activar su usuario');
         res.redirect('/user/login/');
     } catch (error) {
         req.flash('error', error.errors.map(error => error.message));
@@ -45,17 +56,32 @@ ctrl.create = async (req, res, next) => {
     }
 }
 
-ctrl.reset = async (req, res, next) => {
+ctrl.sendToken = async (req, res, next) => {
     try {
-        const user = await User.findOne({ where: { email: req.body.email }});
+        // Busco el usuario sobre el que están intentando restablecer su contraseña
+        let user = await User.findOne({ where: { email: req.body.email }});
         if (!user) {
             req.flash('error', 'Usuario no encontrado');
             res.redirect('/user/reset');
         }
+        // Genero token, fecha de expiración y lo guardo todo en BD
         user.token = crypto.randomBytes(20).toString('hex');
         user.expire = Date.now() + 360000;
-        await user.save();
-        res.redirect(`/user/reset/${user.token}`);
+        user = await user.save();
+        if (!user) {
+            req.flash('error', 'Error generando token para restablecer contraseña');
+            res.redirect('/user/reset');
+        }
+        // Genero url de reseteo y la envío por mail
+        const resetUrl = `http://${req.headers.host}/user/reset/${user.token}`;
+        sendMail.send({
+            email: user.email, 
+            subject: 'Password reset',
+            url: resetUrl,
+            view: 'resetPassword'
+        });
+        req.flash('correcto', 'Se le ha enviado un mail con el enlace para restablecer el password');
+        res.redirect('/user/reset');
     } catch (error) {
         req.flash('error', `Error incontrolado ${error.toString}`);
         res.render('user/reset', {
@@ -79,8 +105,31 @@ ctrl.resetWithToken = async (req, res, next) => {
     res.json(user);
 }
 
+ctrl.activateUser = async (req, res, next) => {
+    let user = await User.findOne(
+        {   where: 
+            {   token: req.params.token,
+                active: false
+            }
+        }
+    );
+    if (!user) {
+        req.flash('error', 'Cuenta de usuario no encontrada');
+        res.redirect('/user/login');
+    }
+    user.token = null;
+    user.expire = null;
+    user.active = true;
+    user = await user.save();
+    if (!user) {
+        req.flash('error', 'Error intentando activar tu cuenta');  
+        res.redirect('/user/login');
+    }
+    req.flash('correcto', 'Tu cuenta ha sido activada con con éxito');  
+    res.redirect('/user/login');
+}
+
 ctrl.updatePassword = async (req, res, next) => {
-    //res.json(req.params.token);
     const user = await User.findOne(
         {   where: 
             {   token: req.params.token,
